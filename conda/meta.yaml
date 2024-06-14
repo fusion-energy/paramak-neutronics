@@ -1,0 +1,47 @@
+{% set name = "openmc_dagmc_wrapper" %}
+
+package:
+  name: "{{ name|lower }}"
+  # conda package version tag is obtained from the git release version tag
+  version: {{ GIT_DESCRIBE_TAG }}
+
+source:
+  path: ..
+
+build:
+  number: 0
+  script: python setup.py install --single-version-externally-managed --record=record.txt
+
+requirements:
+  build:
+    - python {{ python }}
+    - setuptools
+  run:
+    - neutronics_material_maker
+    - dagmc_h5m_file_inspector
+    - dagmc_bounding_box
+
+test:
+  imports:
+    - openmc_dagmc_wrapper
+  requires:
+    - pytest
+  # source_files:
+  #   - tests/
+  #   - examples/
+  # commands:
+  #   - pytest tests
+
+
+about:
+  home: "https://github.com/fusion-energy/openmc_dagmc_wrapper"
+  license: MIT
+  license_family: MIT
+  license_file: LICENSE.txt
+  doc_url: https://github.com/fusion-energy/openmc_dagmc_wrapper
+  dev_url: https://github.com/fusion-energy/openmc_dagmc_wrapper
+  summary: A Python package that extends OpenMC base classes to provide convenience features and standardized tallies when simulating DAGMC geometry with OpenMC.
+
+extra:
+  recipe-maintainers:
+    - shimwell
